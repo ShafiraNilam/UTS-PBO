@@ -149,7 +149,7 @@ public class frm_login extends javax.swing.JFrame {
        try {
            connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/db_pesantiketkai?zeroDateTimeBehaviour=convertToNull",
                    "root", "");
-           ps = connection.prepareStatement("SELECT `username`, `password` FROM `tb_akun` WHERE `username` = ? AND `password` = ?");
+           ps = connection.prepareStatement("SELECT `username`, `password` FROM `tb_admin` WHERE `username` = ? AND `password` = ?");
            ps.setString(1, txtnama.getText());
            ps.setString(2, txtpass.getText());
            ResultSet result = ps.executeQuery();

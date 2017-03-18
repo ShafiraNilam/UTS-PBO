@@ -12,6 +12,7 @@ import java.text.SimpleDateFormat;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -20,9 +21,7 @@ import javax.swing.table.DefaultTableModel;
  */
 public class frm_main extends javax.swing.JFrame {
 
-    /**
-     * Creates new form frm_main
-     */
+    
     public frm_main() {
         initComponents();
     }
@@ -56,14 +55,15 @@ public class frm_main extends javax.swing.JFrame {
         jnskai = new javax.swing.JComboBox<>();
         duduk = new javax.swing.JComboBox<>();
         waktu = new javax.swing.JComboBox<>();
-        harga = new javax.swing.JTextField();
+        hrg = new javax.swing.JTextField();
         jPanel3 = new javax.swing.JPanel();
         jButton1 = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         tb1Data = new javax.swing.JTable();
-        jButton2 = new javax.swing.JButton();
+        refresh = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
+        jButton6 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(null);
@@ -187,8 +187,8 @@ public class frm_main extends javax.swing.JFrame {
         waktu.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "06.00", "10.00", "14.00", "16.00", "20.00" }));
         jPanel2.add(waktu);
         waktu.setBounds(240, 280, 170, 30);
-        jPanel2.add(harga);
-        harga.setBounds(240, 380, 170, 30);
+        jPanel2.add(hrg);
+        hrg.setBounds(240, 380, 170, 30);
 
         jPanel3.setBackground(new java.awt.Color(204, 204, 255));
         jPanel3.setLayout(null);
@@ -224,17 +224,17 @@ public class frm_main extends javax.swing.JFrame {
         jPanel2.add(jScrollPane1);
         jScrollPane1.setBounds(450, 30, 820, 240);
 
-        jButton2.setBackground(new java.awt.Color(0, 0, 51));
-        jButton2.setFont(new java.awt.Font("Lucida Fax", 1, 12)); // NOI18N
-        jButton2.setForeground(new java.awt.Color(204, 204, 255));
-        jButton2.setText("DELETE");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        refresh.setBackground(new java.awt.Color(0, 0, 51));
+        refresh.setFont(new java.awt.Font("Lucida Fax", 1, 12)); // NOI18N
+        refresh.setForeground(new java.awt.Color(204, 204, 255));
+        refresh.setText("REFRESH");
+        refresh.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                refreshActionPerformed(evt);
             }
         });
-        jPanel2.add(jButton2);
-        jButton2.setBounds(630, 330, 120, 50);
+        jPanel2.add(refresh);
+        refresh.setBounds(1130, 330, 120, 50);
 
         jButton3.setBackground(new java.awt.Color(0, 0, 51));
         jButton3.setFont(new java.awt.Font("Lucida Fax", 1, 12)); // NOI18N
@@ -259,6 +259,18 @@ public class frm_main extends javax.swing.JFrame {
         });
         jPanel2.add(jButton4);
         jButton4.setBounds(810, 330, 120, 50);
+
+        jButton6.setBackground(new java.awt.Color(0, 0, 51));
+        jButton6.setFont(new java.awt.Font("Lucida Fax", 1, 12)); // NOI18N
+        jButton6.setForeground(new java.awt.Color(204, 204, 255));
+        jButton6.setText("DELETE");
+        jButton6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton6ActionPerformed(evt);
+            }
+        });
+        jPanel2.add(jButton6);
+        jButton6.setBounds(630, 330, 120, 50);
 
         getContentPane().add(jPanel2);
         jPanel2.setBounds(0, 90, 1310, 480);
@@ -289,20 +301,20 @@ public class frm_main extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MD-dd");
+         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
          String tanggal = dateFormat.format(tglBrngkt.getDate());
-         String WKT = "";
-        if("".equals(pemesanan.getText()) || "".equals(noid.getText())|| "".equals(brngkt.getText()) || "".equals(tujuan.getText()) || tanggal.equals("")){
+         String WKT =  waktu.getSelectedItem().toString();
+        
+        if("".equals(pemesanan.getText()) || "".equals(noid.getText())|| "".equals(brngkt.getText()) || "".equals(tujuan.getText()) || "".equals(hrg.getText()) || tanggal.equals("")){
             JOptionPane.showMessageDialog(this, "Harap Lengkapi Data", "Error", JOptionPane.WARNING_MESSAGE);
         }else{
             if(jnskai.getSelectedItem().equals("Ekonomi")){
-                harga.setText("Rp 50.000");
+                
             }else if (jnskai.getSelectedItem().equals("Bisinis")){
-                harga.setText("Rp 100.000");
+                
             }else if (jnskai.getSelectedItem().equals("Eksekutif")){
-                harga.setText("Rp 150.000");
-                
-                
+               
+               
                 if(waktu.getSelectedItem().equals("06.00")){
                     WKT = "06.00";
                 }else if (waktu.getSelectedItem().equals("10.00")){
@@ -316,7 +328,7 @@ public class frm_main extends javax.swing.JFrame {
                 }
             }
             String SQL = "INSERT INTO tb_pemesanan (nm_pmsn,no_id,stasiun_awal,stasiun_akhir,tgl_brngkt,jns_kai,wkt_brngkt,tmpt_duduk,harga)"
-                    + "VALUES ('"+pemesanan.getText()+"','"+noid.getText()+"','"+brngkt.getText()+"','"+tujuan.getText()+"','"+tanggal+"','"+jnskai.getSelectedItem()+"','"+WKT+"','"+duduk.getSelectedItem()+"','"+harga.getText()+"')";
+                    + "VALUES ('"+pemesanan.getText()+"','"+noid.getText()+"','"+brngkt.getText()+"','"+tujuan.getText()+"','"+tanggal+"','"+jnskai.getSelectedItem()+"','"+WKT+"','"+duduk.getSelectedItem()+"','"+hrg.getText()+"')";
             int status = KoneksiDB.execute(SQL);
             if (status == 1){
                 JOptionPane.showMessageDialog(this,"Data berhasil ditambahkan", "Sukses", JOptionPane.INFORMATION_MESSAGE);
@@ -327,19 +339,78 @@ public class frm_main extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton2ActionPerformed
-
+    private void refreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshActionPerformed
+        selectData();
+    }//GEN-LAST:event_refreshActionPerformed
+    public void selectData() {
+        
+        String kolom[] = {"nm_pmsn","no__id","stasiun_awal","stasiun_akhir","tgl_brngkt","jns_kai","wkt_brngkt","tmpt_duduk","harga"};
+        DefaultTableModel dtm = new DefaultTableModel(null, kolom);
+        String SQL = "SELECT * FROM tb_pemesanan";
+        ResultSet rs = KoneksiDB.executeQuery(SQL);
+        try {
+            while(rs.next()) {
+        String nm_pmsn = rs.getString(1);
+        String no_id = rs.getString(2);
+        String stasiun_awal = rs.getString(3);
+        String stasiun_akhir = rs.getString(4);
+        String tgl_brngkt = rs.getString(5);
+        String jns_kai = rs.getString(6);
+        String wkt_brngkt = rs.getString(7);
+        String tmpt_duduk = rs.getString(8);
+        String harga = rs.getString(9);
+        
+        String data[] = {nm_pmsn,no_id,stasiun_awal,stasiun_akhir,tgl_brngkt,jns_kai,wkt_brngkt,tmpt_duduk,harga};
+        dtm.addRow(data);
+        }
+    }catch (SQLException ex) {
+        Logger.getLogger(frm_main.class.getName()).log(Level.SEVERE, null, ex);
+    }
+        tb1Data.setModel(dtm);
+    }
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        // TODO add your handling code here:
         MessageFormat header = new MessageFormat(" Pemesanan Tiket Kereta");
-        MessageFormat footer = new MessageFormat("Page");
+        MessageFormat footer = new MessageFormat("Page (0,number,integer) ");
+        try{
+            tb1Data.print(JTable.PrintMode.FIT_WIDTH, header, footer, true, null, true, null);
+        }   catch (java.awt.print.PrinterException e){
+            System.err.format("Cannot print %s%n", e.getMessage());
+        }
+        
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         // TODO add your handling code here:
+          // TODO add your handling code here:
+        pemesanan.setText("");
+        noid.setText("");
+        brngkt.setText("");
+        tujuan.setText("");
+        tglBrngkt.setDateFormatString("");
+        jnskai.setToolTipText("");
+        waktu.setToolTipText("");
+        brngkt.setText("");
+        duduk.setToolTipText("");
+        hrg.setText("");
     }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
+        // TODO add your handling code here:
+        
+        int baris = tb1Data.getSelectedRow();
+        if( baris != -1){
+            String no_id = tb1Data.getValueAt(baris, 1).toString();
+            String SQL = "DELETE FROM tb_pemesanan WHERE no_id='"+no_id+"'";
+            int status = KoneksiDB.execute(SQL);
+            if (status==1){
+                JOptionPane.showMessageDialog(this, "Data berhasil dihapus", "Sukes", JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                 JOptionPane.showMessageDialog(this, "Data gagal dihapus", "gagal", JOptionPane.WARNING_MESSAGE);
+            }
+        }else {
+             JOptionPane.showMessageDialog(this, "Pilih Baris data terlebih dahulu", "Error", JOptionPane.WARNING_MESSAGE);
+        }
+    }//GEN-LAST:event_jButton6ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -379,11 +450,11 @@ public class frm_main extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField brngkt;
     private javax.swing.JComboBox<String> duduk;
-    private javax.swing.JTextField harga;
+    private javax.swing.JTextField hrg;
     private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
+    private javax.swing.JButton jButton6;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
@@ -401,38 +472,13 @@ public class frm_main extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> jnskai;
     private javax.swing.JTextField noid;
     private javax.swing.JTextField pemesanan;
+    private javax.swing.JButton refresh;
     private javax.swing.JTable tb1Data;
     private com.toedter.calendar.JDateChooser tglBrngkt;
     private javax.swing.JTextField tujuan;
     private javax.swing.JComboBox<String> waktu;
     // End of variables declaration//GEN-END:variables
 
-    private void selectData() {
-        
-        String kolom[] = {"nm_pmsn","noid","stasiun_awal","stasiun_akhir","tgl_brngkt","jns_kai","wkt_brngkt","tmpt_duduk","harga"};
-        DefaultTableModel dtm = new DefaultTableModel(null, kolom);
-        String SQL = "SELECT * FROM t_pemesanan";
-        ResultSet rs = KoneksiDB.executeQuery(SQL);
-        try {
-            while(rs.next()) {
-        String noid = rs.getString(1);
-        String nm_pmsn = rs.getString(2);
-        String JenisKelamin = "";
-        if("L".equals(rs.getString(3))) {
-            JenisKelamin = "Laki-laki";
-        }else{
-            JenisKelamin = "Perempuan";
-        }
-        String Kelas = rs.getString(4);
-        String Email = rs.getString(5);
-        String Alamat = rs.getString(6);
-        String data[] = {nm_pmsn,noid,stasiun_awal,stasiun_akhir,tgl_brngkt,jns_kai,wkt_brngkt,tmpt_duduk,harga};
-        dtm.addRow(data);
-        }
-    }catch (SQLException ex) {
-        Logger.getLogger(frm_main.class.getName()).log(Level.SEVERE, null, ex);
-    }
-        tb1Data.setModel(dtm);
-    }
+    
 }
     
